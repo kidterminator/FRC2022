@@ -13,6 +13,7 @@ public class Robot extends RobotBase {
     private IRobotMode teleoperatedMode;
 
     private IDrive drive;
+    private ILauncher launcher;
     private IGyroscopeSensor gyroscope;
 
     public Robot() {
@@ -21,8 +22,8 @@ public class Robot extends RobotBase {
         drive = new Drive(gyroscope);
         //drive = new NullDrive();
         disabledMode = new DisabledMode();
-        autonomousMode = new AutonomousMode(drive);
-        teleoperatedMode = new TeleoperatedMode(drive);
+        //autonomousMode = new AutonomousMode(drive);
+        teleoperatedMode = new TeleoperatedMode(drive, launcher);
     }
 
 
@@ -66,7 +67,7 @@ public class Robot extends RobotBase {
         } else if (isAutonomous()) {
             HAL.observeUserProgramAutonomous();
             return autonomousMode;
-        } else if (isOperatorControl()) {
+        } else if (isTeleop()) {
             HAL.observeUserProgramTeleop();
             return teleoperatedMode;
         } else if (isTest()) {
